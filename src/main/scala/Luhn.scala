@@ -1,6 +1,7 @@
 object Luhn:
    def valid(s: String): Boolean =
-      s.filterNot(_.isSpaceChar).reverse.zipWithIndex.map { (d, i) =>
-         val x = d.asDigit * (1 + i % 2)
-         x - (if (x > 9) 9 else 0)
-      }.sum % 10 == 0 && s.trim.length > 1
+      s.filterNot(_.isSpaceChar)
+         .reverse
+         .zipWithIndex
+         .map(d => (d._1.asDigit * (1 + d._2 % 2) + (if d._1.asDigit * (1 + d._2 % 2) > 9 then -9 else 0)) % 10)
+         .sum % 10 == 0 && s.trim.length > 1
