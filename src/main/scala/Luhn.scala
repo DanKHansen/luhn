@@ -1,8 +1,6 @@
 object Luhn:
    def valid(s: String): Boolean =
-      val trimmed = s.filterNot(_.isSpaceChar)
-      trimmed.forall(_.isDigit) && trimmed.length > 1 && {
-         val everySecond = trimmed.reverse.zipWithIndex.filter(_._2 % 2 != 0).map(_._1)
-         val doubled = everySecond.map(_.asDigit).map(n => if n * 2 > 9 then n * 2 - 9 else n * 2).mkString
-         trimmed.diff(everySecond).concat(doubled).map(_.asDigit).sum % 10 == 0
-      }
+      s.filterNot(_.isSpaceChar).reverse.zipWithIndex.map { (d, i) =>
+         val x = d.asDigit * (1 + i % 2)
+         x - (if (x > 9) 9 else 0)
+      }.sum % 10 == 0 && s.trim.length > 1
